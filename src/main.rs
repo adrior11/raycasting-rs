@@ -1,6 +1,6 @@
-use sdl2::{event::Event, keyboard::Keycode, Sdl, VideoSubsystem};
+use sdl2::{event::Event, keyboard::Keycode, pixels::PixelFormatEnum, Sdl, VideoSubsystem};
 
-use doom_rs::modules::{Camera, Keystate, State, Vec2};
+use doom_rs::modules::{self, Camera, Keystate, State, Vec2, SCREEN_HEIGHT, SCREEN_WIDTH};
 
 const ROTSPEED: f32 = 3.0 * 0.016;
 const MOVESPEED: f32 = 3.0 * 0.016;
@@ -22,15 +22,24 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .build()
         .map_err(|e| e.to_string())?;
 
+    let texture_creator = canvas.texture_creator();
+    let texture = texture_creator
+        .create_texture_streaming(PixelFormatEnum::ARGB8888, SCREEN_WIDTH, SCREEN_HEIGHT)
+        .unwrap();
+
     let mut dir: Vec2 = Vec2::new(-1.0, 0.1);
     dir.normalize();
-
     let camera = Camera::builder()
         .pos(Vec2::new(2.0, 2.0))
         .dir(dir)
         .plane(Vec2::new(-1.0, 0.1))
         .build();
-    let mut state = State::builder().canvas(canvas).camera(camera).build();
+
+    let mut state = State::builder()
+        .canvas(canvas)
+        .texture(texture)
+        .camera(camera)
+        .build();
 
     let mut keystate = Keystate::default();
     let mut event_pump = sdl_context.event_pump()?;
@@ -62,8 +71,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             state.camera.pos.y -= state.camera.dir.y * MOVESPEED;
         }
 
-        state.pixels = None;
-        // TODO: render & present render
+        state.clear_pixels();
+
+        modules::render(&mut state);
+
+        state.update_texture();
+        state.render();
     }
 
     std::process::exit(0)

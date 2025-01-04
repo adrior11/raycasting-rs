@@ -1,22 +1,24 @@
-pub enum PointSide {
-    Right,
-    On,
-    Left,
-}
-
-impl PointSide {
-    pub fn classify(f: f32) -> Self {
-        match f {
-            f if f > 0.0 => PointSide::Right,
-            f if f < 0.0 => PointSide::Left,
-            _ => PointSide::On,
-        }
-    }
-}
+use super::consts::MAP_SIZE;
 
 pub struct Vec2i {
     pub x: i32,
     pub y: i32,
+}
+
+impl Vec2i {
+    pub fn new(x: i32, y: i32) -> Self {
+        Self { x, y }
+    }
+}
+
+impl Vec2i {
+    pub fn to_map_coords(&self) -> Option<(usize, usize)> {
+        if self.x >= 0 && self.x < MAP_SIZE && self.y >= 0 && self.y < MAP_SIZE {
+            Some((self.y as usize, self.x as usize))
+        } else {
+            None
+        }
+    }
 }
 
 impl From<Vec2> for Vec2i {
@@ -28,7 +30,7 @@ impl From<Vec2> for Vec2i {
     }
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 pub struct Vec2 {
     pub x: f32,
     pub y: f32,
@@ -39,11 +41,6 @@ impl Vec2 {
         Self { x, y }
     }
 
-    fn dot(&mut self, o: Vec2) {
-        self.x *= o.x;
-        self.y *= o.y;
-    }
-
     fn len(&self) -> f32 {
         (self.x.powi(2) + self.y.powi(2)).sqrt()
     }
@@ -52,18 +49,6 @@ impl Vec2 {
         let len = self.len();
         self.x /= len;
         self.y /= len;
-    }
-
-    fn rot(&mut self, angle: f32) {
-        let x = self.x;
-        let y = self.y;
-        self.x = x * angle.cos() - y * angle.sin();
-        self.y = x * angle.sin() + y * angle.cos();
-    }
-
-    fn point_side(&self, a: Vec2, b: Vec2) -> PointSide {
-        let val = (b.x - a.x) * (self.y - a.y) - (b.y - a.y) * (self.x - a.x);
-        PointSide::classify(val)
     }
 }
 
