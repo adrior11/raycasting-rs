@@ -1,8 +1,7 @@
 use core::f32;
 
 use super::{
-    color::{self, WallColor},
-    consts::{SCREEN_HEIGHT, SCREEN_WIDTH, WALL_DIM_FACTOR},
+    consts::{CAMERA_LUT, MAP_DATA, SCREEN_HEIGHT, SCREEN_WIDTH, WALL_DIM_FACTOR},
     state::State,
     util,
     vec2::{Vec2, Vec2i},
@@ -13,44 +12,13 @@ use super::{
 struct Hit {
     val: i32,
     side: i32,
-    pos: Vec2,
-}
-
-/// Draws a vertical line on the screen.
-///
-/// # Parameters
-/// - `state`: Mutable reference to the game/application state (for the pixel buffer).
-/// - `x`: X-coordinate on the screen where the line is drawn.
-/// - `y0`: Start Y-coordinate for the line (top).
-/// - `y1`: End Y-coordinate for the line (bottom).
-/// - `color`: 0xAARRGGBB color to use for the line.
-#[allow(clippy::identity_op)]
-fn ver_line(state: &mut State, x: u32, y0: i32, y1: i32, color: u32) {
-    let pixels = &mut state.pixels;
-
-    // Clamp the drawing range to the screen boundaries
-    let y_start = y0.max(0) as usize;
-    let y_end = y1.min((SCREEN_HEIGHT - 1) as i32) as usize;
-
-    for y in y_start..=y_end {
-        // Convert pixel index to a byte offset in the u8 buffer:
-        // each pixel is 4 bytes, so multiply by 4.
-        let row_offset = y * SCREEN_WIDTH as usize;
-        let offset = (row_offset + x as usize) * 4;
-
-        // Decompose the color (0xAARRGGBB) into separate bytes (ARGB8888 -> RGBA in memory).
-        pixels[offset + 0] = ((color >> 16) & 0xFF) as u8; // R
-        pixels[offset + 1] = ((color >> 8) & 0xFF) as u8; // G
-        pixels[offset + 2] = ((color >> 0) & 0xFF) as u8; // B
-        pixels[offset + 3] = ((color >> 24) & 0xFF) as u8; // A
-    }
 }
 
 /// Main rendering function to perform raycasting and draw vertical strips.
 pub fn render(state: &mut State) {
     for x in 0..SCREEN_WIDTH {
         // x coordinate in camera space from [-1, 1]
-        let xcam = (2.0 * (x as f32 / SCREEN_WIDTH as f32)) - 1.0;
+        let xcam = CAMERA_LUT[x as usize];
 
         // Compute ray direction
         let dir = Vec2::new(
@@ -93,26 +61,16 @@ pub fn render(state: &mut State) {
                 hit.side = 1;
             }
 
-            match util::get_map_value(&ipos) {
-                Ok(val) => hit.val = val,
-                Err(e) => {
-                    panic!("Error: {:?}", e);
-                }
-            }
+            hit.val = MAP_DATA[ipos.y as usize][ipos.x as usize];
         }
 
         // Determine color based on hit value
-        let mut color: u32 = match WallColor::from_val(hit.val) {
-            Some(color) => color.to_u32(),
-            None => panic!("Map is misconfigured"),
-        };
+        let mut color: u32 = util::get_wall_color(hit.val);
 
         // If hit was in y-direction (hit.side == 1), dim the color
         if hit.side == 1 {
-            color = color::dim_color(color, WALL_DIM_FACTOR);
+            color = util::dim_color(color, WALL_DIM_FACTOR);
         }
-
-        hit.pos = Vec2::new(pos.x + side_dist.x, pos.y + side_dist.y);
 
         // Calculate the perpendicular distance for fish-eye correction
         let perp_dist = if hit.side == 0 {
@@ -130,5 +88,45 @@ pub fn render(state: &mut State) {
 
         // Draw the vertical line
         ver_line(state, x, y0, y1, color);
+    }
+}
+
+/// Draws a vertical line on the screen.
+///
+/// # Parameters
+/// - `state`: Mutable reference to the game/application state (for the pixel buffer).
+/// - `x`: X-coordinate on the screen where the line is drawn.
+/// - `y0`: Start Y-coordinate for the line (top).
+/// - `y1`: End Y-coordinate for the line (bottom).
+/// - `color`: 0xAARRGGBB color to use for the line.
+#[allow(clippy::identity_op)]
+#[inline(always)]
+fn ver_line(state: &mut State, x: u32, y0: i32, y1: i32, color: u32) {
+    let pixels = &mut state.pixels[..];
+
+    // Decompose the color (0xAARRGGBB) into separate bytes (ARGB8888 -> RGBA in memory).
+    let a = ((color >> 24) & 0xFF) as u8;
+    let r = ((color >> 16) & 0xFF) as u8;
+    let g = ((color >> 8) & 0xFF) as u8;
+    let b = ((color >> 0) & 0xFF) as u8;
+
+    // Clamp the drawing range to the screen boundaries
+    let y_start = y0.max(0) as usize;
+    let y_end = y1.min((SCREEN_HEIGHT - 1) as i32) as usize;
+
+    // Convert pixel index to a byte offset in the u8 buffer:
+    // each pixel is 4 bytes, so multiply by 4.
+    let mut offset = (y_start * SCREEN_WIDTH as usize + x as usize) * 4;
+    let stride = SCREEN_WIDTH as usize * 4;
+
+    for _ in y_start..=y_end {
+        // Write precomputed channels
+        pixels[offset + 0] = r;
+        pixels[offset + 1] = g;
+        pixels[offset + 2] = b;
+        pixels[offset + 3] = a;
+
+        // Move to next row
+        offset += stride;
     }
 }
