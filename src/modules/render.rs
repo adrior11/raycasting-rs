@@ -102,7 +102,7 @@ pub fn render(state: &mut State) {
 #[allow(clippy::identity_op)]
 #[inline(always)]
 fn ver_line(state: &mut State, x: u32, y0: i32, y1: i32, color: u32) {
-    let pixels = &mut state.pixels[..];
+    let pixels_ptr = state.pixels.as_mut_ptr();
 
     // Decompose the color (0xAARRGGBB) into separate bytes (ARGB8888 -> RGBA in memory).
     let a = ((color >> 24) & 0xFF) as u8;
@@ -121,10 +121,12 @@ fn ver_line(state: &mut State, x: u32, y0: i32, y1: i32, color: u32) {
 
     for _ in y_start..=y_end {
         // Write precomputed channels
-        pixels[offset + 0] = r;
-        pixels[offset + 1] = g;
-        pixels[offset + 2] = b;
-        pixels[offset + 3] = a;
+        unsafe {
+            *pixels_ptr.add(offset + 0) = r;
+            *pixels_ptr.add(offset + 1) = g;
+            *pixels_ptr.add(offset + 2) = b;
+            *pixels_ptr.add(offset + 3) = a;
+        }
 
         // Move to next row
         offset += stride;

@@ -1,7 +1,7 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 use sdl2::{pixels::PixelFormatEnum, Sdl, VideoSubsystem};
 
-use doom_rs::modules::{self, Camera, State, Vec2, SCREEN_HEIGHT, SCREEN_WIDTH};
+use raycasting_rs::modules::{self, Camera, State, Vec2, SCREEN_HEIGHT, SCREEN_WIDTH};
 
 fn bench_renderer(c: &mut Criterion) {
     let mut group = c.benchmark_group("renderer_benchmark");
@@ -10,7 +10,7 @@ fn bench_renderer(c: &mut Criterion) {
     let video_subsystem: VideoSubsystem = sdl_context.video().unwrap();
 
     let window = video_subsystem
-        .window("DOOM-RS", 1280, 780)
+        .window("BENCHMARK", 1280, 780)
         .position_centered()
         .build()
         .map_err(|e| e.to_string())

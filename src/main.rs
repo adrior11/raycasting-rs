@@ -1,6 +1,6 @@
 use sdl2::{event::Event, keyboard::Keycode, pixels::PixelFormatEnum, Sdl, VideoSubsystem};
 
-use doom_rs::modules::{self, Camera, Keystate, State, Vec2, SCREEN_HEIGHT, SCREEN_WIDTH};
+use raycasting_rs::modules::{self, Camera, Keystate, State, Vec2, SCREEN_HEIGHT, SCREEN_WIDTH};
 
 const ROTSPEED: f32 = 3.0 * 0.016;
 const MOVESPEED: f32 = 3.0 * 0.016;
@@ -10,7 +10,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let video_subsystem: VideoSubsystem = sdl_context.video()?;
 
     let window = video_subsystem
-        .window("DOOM-RS", 1280, 780)
+        .window("RAYCASTING-RS", 1280, 780)
         .position_centered()
         .build()
         .map_err(|e| e.to_string())?;
