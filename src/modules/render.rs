@@ -93,14 +93,10 @@ pub fn render(state: &mut State) {
                 hit.side = 1;
             }
 
-            if util::out_of_bounds(&ipos) {
-                panic!("DDA Out of bounds")
-            }
-
             match util::get_map_value(&ipos) {
                 Ok(val) => hit.val = val,
                 Err(e) => {
-                    panic!("Should have checked OoB: {}", e);
+                    panic!("Error: {:?}", e);
                 }
             }
         }
