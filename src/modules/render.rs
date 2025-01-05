@@ -25,7 +25,6 @@ fn ver_line(state: &mut State, x: u32, y0: i32, y1: i32, color: u32) {
 
         // Decompose the color (0xAARRGGBB) into separate bytes.
         // For ARGB8888 in memory (R, G, B, A):
-        // BUG: index out of bounds: the len is 331776 but the index is 334656
         pixels[offset] = ((color >> 16) & 0xFF) as u8; // R
         pixels[offset + 1] = ((color >> 8) & 0xFF) as u8; // G
         pixels[offset + 2] = ((color) & 0xFF) as u8; // B
@@ -80,7 +79,7 @@ pub fn render(state: &mut State) {
                 ipos.x += step.x;
                 hit.side = 0;
             } else {
-                side_dist.y += side_dist.y;
+                side_dist.y += delta_dist.y;
                 ipos.y += step.y;
                 hit.side = 1;
             }

@@ -29,10 +29,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut dir: Vec2 = Vec2::new(-1.0, 0.1);
     dir.normalize();
+
     let camera = Camera::builder()
         .pos(Vec2::new(2.0, 2.0))
         .dir(dir)
-        .plane(Vec2::new(-1.0, 0.1))
+        .plane(Vec2::new(0.0, 0.66))
         .build();
 
     let mut state = State::builder()
