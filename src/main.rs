@@ -27,7 +27,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .create_texture_streaming(PixelFormatEnum::ARGB8888, SCREEN_WIDTH, SCREEN_HEIGHT)
         .unwrap();
 
-    let mut dir: Vec2 = Vec2::new(-1.0, 0.1);
+    let mut dir = Vec2::new(-1.0, 0.1);
     dir.normalize();
 
     let camera = Camera::builder()

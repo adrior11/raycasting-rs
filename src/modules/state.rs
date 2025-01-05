@@ -19,16 +19,19 @@ pub struct State<'a> {
 }
 
 impl<'a> State<'a> {
+    /// Clears the entire pixel buffer.
     pub fn clear_pixels(&mut self) {
         self.pixels.fill(0);
     }
 
+    /// Updates the SDL texture from the pixel buffer.
     pub fn update_texture(&mut self) {
         self.texture
             .update(None, &self.pixels.clone(), SCREEN_WIDTH as usize * 4)
             .unwrap();
     }
 
+    /// Renders the texture to the canvas and presents it.
     pub fn render(&mut self) {
         self.canvas.clear();
         self.canvas

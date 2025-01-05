@@ -10,12 +10,17 @@ pub struct Camera {
 }
 
 impl Camera {
-    pub fn rotate(&mut self, f: f32) {
+    /// Rotates the camera by radians around the Z-axis.
+    pub fn rotate(&mut self, rad: f32) {
         let d = self.dir;
         let p = self.plane;
-        self.dir.x = d.x * f.cos() - d.y * f.sin();
-        self.dir.y = d.x * f.sin() + d.y * f.cos();
-        self.plane.x = p.x * f.cos() - p.y * f.sin();
-        self.plane.y = p.x * f.sin() + p.y * f.cos();
+
+        // Rotate direction
+        self.dir.x = d.x * rad.cos() - d.y * rad.sin();
+        self.dir.y = d.x * rad.sin() + d.y * rad.cos();
+
+        // Rotate plane
+        self.plane.x = p.x * rad.cos() - p.y * rad.sin();
+        self.plane.y = p.x * rad.sin() + p.y * rad.cos();
     }
 }

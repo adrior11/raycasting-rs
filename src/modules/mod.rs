@@ -1,4 +1,5 @@
 mod camera;
+mod color;
 mod consts;
 mod keystate;
 mod render;
