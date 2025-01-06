@@ -87,6 +87,8 @@ pub fn render(state: &mut State) {
         let y1 = ((SCREEN_HEIGHT / 2) as i32 + (h / 2)).min(SCREEN_HEIGHT as i32 - 1);
 
         // Draw the vertical line
+        ver_line(state, x, 0, y0, 0xFF202020);
+        ver_line(state, x, y1, SCREEN_HEIGHT as i32, 0xFF505050);
         ver_line(state, x, y0, y1, color);
     }
 }
