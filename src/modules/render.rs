@@ -1,7 +1,7 @@
 use core::f32;
 
 use super::{
-    consts::{CAMERA_LUT, MAP_DATA, SCREEN_HEIGHT, SCREEN_WIDTH, WALL_DIM_FACTOR},
+    consts::{CAMERA_LUT, SCREEN_HEIGHT, SCREEN_WIDTH, WALL_DIM_FACTOR},
     state::State,
     util,
     vec2::{Vec2, Vec2i},
@@ -61,7 +61,7 @@ pub fn render(state: &mut State) {
                 hit.side = 1;
             }
 
-            hit.val = MAP_DATA[ipos.y as usize][ipos.x as usize];
+            hit.val = util::get_tile(&ipos);
         }
 
         // Determine color based on hit value

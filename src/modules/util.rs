@@ -1,6 +1,10 @@
 use core::f32;
 
-use super::{consts::COLORS, SCREEN_WIDTH};
+use super::{
+    consts::{COLORS, MAP_DATA},
+    vec2::Vec2i,
+    SCREEN_WIDTH,
+};
 
 /// Returns the integer sign of a float value.
 #[inline(always)]
@@ -42,6 +46,12 @@ pub fn dim_color(color: u32, factor: u8) -> u32 {
     let br = ((color & 0xFF00FF) * factor as u32) >> 8;
     let g = ((color & 0x00FF00) * factor as u32) >> 8;
     0xFF000000 | (br & 0xFF00FF) | (g & 0x00FF00)
+}
+
+/// Returns the tile value at the specified integer position.
+#[inline(always)]
+pub fn get_tile(ipos: &Vec2i) -> i32 {
+    MAP_DATA[ipos.y as usize][ipos.x as usize]
 }
 
 pub const fn generate_camera_lut() -> [f32; SCREEN_WIDTH as usize] {
