@@ -1,3 +1,5 @@
+use std::ops::{Add, AddAssign, Mul};
+
 use super::consts::MAP_SIZE;
 
 #[derive(Debug)]
@@ -31,14 +33,20 @@ impl Vec2 {
         Self { x, y }
     }
 
-    fn len(&self) -> f32 {
-        (self.x.powi(2) + self.y.powi(2)).sqrt()
+    pub fn square(&self) -> f32 {
+        self.x * self.x + self.y * self.y
+    }
+
+    pub fn len(&self) -> f32 {
+        self.square().sqrt()
     }
 
     pub fn normalize(&mut self) {
         let len = self.len();
-        self.x /= len;
-        self.y /= len;
+        if len != 0.0 {
+            self.x /= len;
+            self.y /= len;
+        }
     }
 }
 
@@ -57,5 +65,32 @@ impl From<Vec2i> for Vec2 {
             x: o.x as f32,
             y: o.y as f32,
         }
+    }
+}
+
+impl Mul<f32> for Vec2 {
+    type Output = Self;
+    fn mul(self, rhs: f32) -> Self::Output {
+        Vec2 {
+            x: self.x * rhs,
+            y: self.y * rhs,
+        }
+    }
+}
+
+impl Add<Vec2> for Vec2 {
+    type Output = Self;
+    fn add(self, rhs: Vec2) -> Self::Output {
+        Vec2 {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+        }
+    }
+}
+
+impl AddAssign<Vec2> for Vec2 {
+    fn add_assign(&mut self, rhs: Vec2) {
+        self.x += rhs.x;
+        self.y += rhs.y;
     }
 }
