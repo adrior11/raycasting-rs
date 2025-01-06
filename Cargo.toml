@@ -10,7 +10,6 @@ rayon = "1.10.0"
 [dependencies.sdl2]
 version = "0.37.0"
 default-features = false
-features = ["gfx", "ttf"]
 
 [dev-dependencies]
 criterion = { version = "0.5.1", features = ["html_reports"] }
