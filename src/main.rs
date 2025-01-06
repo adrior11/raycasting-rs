@@ -62,14 +62,22 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             state.camera.rotate(-ROTSPEED);
         }
 
-        if keystate.is_down(Keycode::Up) {
-            state.camera.pos.x += state.camera.dir.x * MOVESPEED;
-            state.camera.pos.y += state.camera.dir.y * MOVESPEED;
+        if keystate.is_down(Keycode::W) {
+            state.camera.try_move(state.camera.dir, MOVESPEED);
         }
 
-        if keystate.is_down(Keycode::Down) {
-            state.camera.pos.x -= state.camera.dir.x * MOVESPEED;
-            state.camera.pos.y -= state.camera.dir.y * MOVESPEED;
+        if keystate.is_down(Keycode::S) {
+            state.camera.try_move(state.camera.dir, -MOVESPEED);
+        }
+
+        if keystate.is_down(Keycode::D) {
+            let strafe_dir = Vec2::new(state.camera.dir.y, -state.camera.dir.x);
+            state.camera.try_move(strafe_dir, MOVESPEED);
+        }
+
+        if keystate.is_down(Keycode::A) {
+            let strafe_dir = Vec2::new(state.camera.dir.y, -state.camera.dir.x);
+            state.camera.try_move(strafe_dir, -MOVESPEED);
         }
 
         state.clear_pixels();

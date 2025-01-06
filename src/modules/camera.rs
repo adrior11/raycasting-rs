@@ -1,6 +1,9 @@
 use bon::Builder;
 
-use super::vec2::Vec2;
+use super::{
+    util,
+    vec2::{Vec2, Vec2i},
+};
 
 #[derive(Builder)]
 pub struct Camera {
@@ -22,5 +25,19 @@ impl Camera {
         // Rotate plane
         self.plane.x = p.x * rad.cos() - p.y * rad.sin();
         self.plane.y = p.x * rad.sin() + p.y * rad.cos();
+    }
+
+    /// Utility function to attempt movement of the camera.
+    pub fn try_move(&mut self, dir: Vec2, move_speed: f32) {
+        let new_pos = Vec2::new(
+            self.pos.x + dir.x * move_speed,
+            self.pos.y + dir.y * move_speed,
+        );
+
+        let new_tile = Vec2i::from(new_pos);
+
+        if util::get_tile_at(&new_tile) == 0 {
+            self.pos = new_pos;
+        }
     }
 }

@@ -61,7 +61,7 @@ pub fn render(state: &mut State) {
                 hit.side = 1;
             }
 
-            hit.val = util::get_tile(&ipos);
+            hit.val = util::get_tile_at(&ipos);
         }
 
         // Determine color based on hit value

@@ -50,10 +50,11 @@ pub fn dim_color(color: u32, factor: u8) -> u32 {
 
 /// Returns the tile value at the specified integer position.
 #[inline(always)]
-pub fn get_tile(ipos: &Vec2i) -> i32 {
+pub fn get_tile_at(ipos: &Vec2i) -> i32 {
     MAP_DATA[ipos.y as usize][ipos.x as usize]
 }
 
+/// Generates a lookup table of camera space values for raycasting.
 pub const fn generate_camera_lut() -> [f32; SCREEN_WIDTH as usize] {
     let mut lut = [0.0; SCREEN_WIDTH as usize];
     let mut x = 0;
