@@ -1,24 +1,41 @@
 # raycasting-rs
 
-## Overview
+## 💡 Overview
 This project is a quick showcase of the classic Wolfenstein 3D raycasting technique built in Rust.  
 It traces rays through a 2D map to determine wall heights and colors, creating a pseudo-3D view.  
 The engine uses a Digital Differential Analyzer (DDA) approach to step through the map grid, detect wall hits, and compute distances.
 
-Inpsired by this [Youtube video by jdh](https://www.youtube.com/watch?v=fSjc8vLMg8c&t) and this [Blogpost by Lode](https://lodev.org/cgtutor/raycasting.html).
+### Inspiration
+- [Youtube video by jdh](https://www.youtube.com/watch?v=fSjc8vLMg8c&t)
+- [Blogpost by Lode](https://lodev.org/cgtutor/raycasting.html).
 
-## Prerequisites
+## 📦 Prerequisites
 - **Rust and Cargo:** Make sure your have [Rust](https://www.rust-lang.org/tools/install) installed.
 - **SDL2 Library**: This project uses [SDL2](http://www.libsdl.org) as a minimum dependency.
 
 ### Installing SDL2
-- macOS (Homebrew):
+
+#### macOS
+Homebrew example:
 ```bash
 $ brew install sdl2
 ```
 
+#### Linux
+Ubuntu example:
+```bash
+sudo apt-get install libsdl2-dev
+```
+Fedora example:
+```bash
+sudo dnf install SDL2-devel
+```
+Arch example:
+```bash
+sudo pacman -S sdl2
+```
 
-## Building and Running
+## 🚀 Building and Running
 1. Clone the repository:
 ``` bash
 $ git clone https://github.com/adrior11/raycasting-rs.git
@@ -33,7 +50,7 @@ $ cargo run
 
 After starting the application, an SDL2 window should appear, showing the environment using the raycasting technique.
 
-## Unsafe Usage
+## ⚠️ Unsafe Usage
 There's a *unsafe* block in [ver_line](https://github.com/adrior11/raycasting-rs/blob/2835983937a4578d716b6ca8a9ce7e73a0937d2d/src/modules/render.rs#L124)
 to perform pointer arithmetic for writing pixel data. This provides a performance boost of around ~40% after benchmarking it.
 
