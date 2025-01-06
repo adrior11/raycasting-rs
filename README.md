@@ -8,7 +8,7 @@ It traces rays through a 2D map to determine wall heights and colors, creating a
 The engine uses a Digital Differential Analyzer (DDA) approach to step through the map grid, detect wall hits, and compute distances.
 
 ### Inspiration
-- [Youtube video by jdh](https://www.youtube.com/watch?v=fSjc8vLMg8c&t)
+- [YouTube video by jdh](https://www.youtube.com/watch?v=fSjc8vLMg8c&t)
 - [Blogpost by Lode](https://lodev.org/cgtutor/raycasting.html).
 
 ## 📦 Prerequisites
@@ -58,6 +58,7 @@ to perform pointer arithmetic for writing pixel data. This provides a performanc
 
 ### Code
 ```rust
+#[allow(clippy::identity_op)]
 fn ver_line(state: &mut State, x: u32, y0: i32, y1: i32, color: u32) {
     let pixels_ptr = state.pixels.as_mut_ptr();
 
