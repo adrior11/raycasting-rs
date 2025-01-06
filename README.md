@@ -1,5 +1,7 @@
 # raycasting-rs
 
+![showcase](assets/showcase.png)
+
 ## 💡 Overview
 This project is a quick showcase of the classic Wolfenstein 3D raycasting technique built in Rust.  
 It traces rays through a 2D map to determine wall heights and colors, creating a pseudo-3D view.  
