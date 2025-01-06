@@ -12,7 +12,7 @@ The engine uses a Digital Differential Analyzer (DDA) approach to step through t
 - [Blogpost by Lode](https://lodev.org/cgtutor/raycasting.html).
 
 ## 📦 Prerequisites
-- **Rust and Cargo:** Make sure your have [Rust](https://www.rust-lang.org/tools/install) installed.
+- **Rust and Cargo:** Make sure you have [Rust](https://www.rust-lang.org/tools/install) installed.
 - **SDL2 Library**: This project uses [SDL2](http://www.libsdl.org) as a minimum dependency.
 
 ### Installing SDL2
