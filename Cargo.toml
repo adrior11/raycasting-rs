@@ -2,6 +2,11 @@
 name = "raycasting-rs"
 version = "0.1.0"
 edition = "2021"
+authors = ["Adrian Schneider <adrian.schneider11@icloud.com>"]
+description = "Showcase of the classic Wolfenstein 3D raycasting technique built in Rust"
+repository = "https://github.com/adrior11/raycasting-rs"
+readme = "README.md"
+license = "MIT"
 
 [dependencies]
 bon = "3.3.2"
