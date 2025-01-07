@@ -106,7 +106,7 @@ pub fn render(state: &mut State) {
 fn ver_line(state: &mut State, x: u32, y0: i32, y1: i32, color: u32) {
     let pixels_ptr = state.pixels.as_mut_ptr();
 
-    // Decompose the color (0xAARRGGBB) into separate bytes (ARGB8888 -> RGBA in memory).
+    // Decompose the color (0xAARRGGBB) into separate bytes (ARGB8888 -> RGBA in memory)
     let a = ((color >> 24) & 0xFF) as u8;
     let r = ((color >> 16) & 0xFF) as u8;
     let g = ((color >> 8) & 0xFF) as u8;
@@ -117,7 +117,7 @@ fn ver_line(state: &mut State, x: u32, y0: i32, y1: i32, color: u32) {
     let y_end = y1.min((SCREEN_HEIGHT - 1) as i32) as usize;
 
     // Convert pixel index to a byte offset in the u8 buffer:
-    // each pixel is 4 bytes, so multiply by 4.
+    // each pixel is 4 bytes, so multiply by 4
     let mut offset = (y_start * SCREEN_WIDTH as usize + x as usize) * 4;
     let stride = SCREEN_WIDTH as usize * 4;
 

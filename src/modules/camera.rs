@@ -35,7 +35,7 @@ impl Camera {
         // Compute new position
         let mut new_pos = self.pos + move_dir * move_speed;
 
-        // Determine the region of tiles to check.
+        // Determine the region of tiles to check
         let min_tile_x = (new_pos.x - 1.0).floor().max(0.0) as i32;
         let max_tile_x = (new_pos.x + 1.0).ceil().min(MAP_SIZE as f32 - 1.0) as i32;
         let min_tile_y = (new_pos.y - 1.0).floor().max(0.0) as i32;

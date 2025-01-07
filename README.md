@@ -26,15 +26,15 @@ $ brew install sdl2
 #### Linux
 Ubuntu example:
 ```bash
-sudo apt-get install libsdl2-dev
+$ sudo apt-get install libsdl2-dev
 ```
 Fedora example:
 ```bash
-sudo dnf install SDL2-devel
+$ sudo dnf install SDL2-devel
 ```
 Arch example:
 ```bash
-sudo pacman -S sdl2
+$ sudo pacman -S sdl2
 ```
 
 ## 🚀 Building and Running
