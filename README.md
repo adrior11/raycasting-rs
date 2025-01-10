@@ -24,7 +24,7 @@ $ brew install sdl2
 ```
 
 #### Linux
-Ubuntu example:
+Ubuntu/Debian example:
 ```bash
 $ sudo apt-get install libsdl2-dev
 ```
